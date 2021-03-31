@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2017-09-02T15:35:13 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClaimsByType" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" resourceBundle="Bundle" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SOLA_DA"/>
-	<property name="ireport.jasperserver.url" value="http://localhost:8080/jasperserver/"/>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RecordingsByStatus" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" resourceBundle="Bundle_en_AU" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
+	<property name="ireport.jasperserver.url" value="http://cs-reports:8996/"/>
 	<property name="ireport.jasperserver.user" value="jasperadmin"/>
-	<property name="ireport.jasperserver.report.resource" value="/reports/community_server/ClaimsByType_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/reports/community_server/ClaimsByType"/>
+	<property name="ireport.jasperserver.report.resource" value="/Reports/community_server/RecordingsByStatus_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/reports/community_server/RecordingsByStatus"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
@@ -63,13 +61,14 @@
 		</queryString>
 	</subDataset>
 	<parameter name="lang" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["en-us"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["en_AU"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select r.code, get_translation(r.display_value, $P{lang}) as display_value, count(1) as cnt
-from opentenure.claim c inner join administrative.rrr_type r on c.type_code = r.code
-where c.status_code not in ('created','withdrawn','rejected') and c.challenged_claim_id is null
-group by r.code
+		<![CDATA[select s.code,
+get_translation(s.display_value, $P{lang}) as display_value,
+count(1) as cnt
+from opentenure.claim c inner join opentenure.claim_status s on c.status_code = s.code
+group by s.code
 order by display_value]]>
 	</queryString>
 	<field name="code" class="java.lang.String"/>
@@ -135,7 +134,7 @@ order by display_value]]>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{ClaimType}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{ClaimStatus}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
